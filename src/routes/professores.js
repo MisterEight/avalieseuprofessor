@@ -4,9 +4,10 @@ import { pool } from "../db/pool.js";
 const router = Router();
 
 router.get("/", async (req, res) => {
-  const { nome, instituicao, departamento, avaliacaoMinima } = req.query;
+  const { nome, instituicao, departamento, avaliacaoMinima, instituicaoId, departamentoId } = req.query;
   const params = [];
   const where = [];
+  const having = [];
 
   if (nome) {
     params.push(`%${nome}%`);
@@ -20,9 +21,17 @@ router.get("/", async (req, res) => {
     params.push(`%${departamento}%`);
     where.push(`d.nome ILIKE $${params.length}`);
   }
+  if (instituicaoId) {
+    params.push(Number(instituicaoId));
+    where.push(`p.institution_id = $${params.length}`);
+  }
+  if (departamentoId) {
+    params.push(Number(departamentoId));
+    where.push(`p.department_id = $${params.length}`);
+  }
   if (avaliacaoMinima) {
     params.push(Number(avaliacaoMinima));
-    where.push(`COALESCE(AVG(e.rating) FILTER (WHERE e.status = 'aprovada'), 0) >= $${params.length}`);
+    having.push(`COALESCE(AVG(e.rating) FILTER (WHERE e.status = 'aprovada'), 0) >= $${params.length}`);
   }
 
   const baseQuery = `
@@ -40,6 +49,7 @@ router.get("/", async (req, res) => {
     LEFT JOIN evaluations e ON e.professor_id = p.id
     ${where.length ? `WHERE ${where.join(" AND ")}` : ""}
     GROUP BY p.id, i.nome, d.nome
+    ${having.length ? `HAVING ${having.join(" AND ")}` : ""}
     ORDER BY p.id ASC
   `;
 

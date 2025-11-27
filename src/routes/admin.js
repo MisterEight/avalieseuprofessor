@@ -242,4 +242,114 @@ router.delete("/admin/professores/:id", async (req, res) => {
   }
 });
 
+// Listagens admin (catalogo)
+router.get("/admin/instituicoes", async (_req, res) => {
+  try {
+    const insts = await pool.query("SELECT id, nome FROM institutions ORDER BY nome");
+    res.json(insts.rows);
+  } catch (err) {
+    console.error("listar inst admin", err);
+    res.status(500).json({ message: "Erro ao listar instituicoes" });
+  }
+});
+
+router.get("/admin/departamentos", async (req, res) => {
+  const institutionId = req.query.institutionId ? Number(req.query.institutionId) : null;
+  const params = [];
+  let where = "";
+  if (institutionId) {
+    params.push(institutionId);
+    where = "WHERE d.institution_id = $1";
+  }
+  try {
+    const deps = await pool.query(
+      `SELECT d.id, d.nome, d.institution_id, i.nome AS instituicao
+       FROM departments d
+       JOIN institutions i ON i.id = d.institution_id
+       ${where}
+       ORDER BY i.nome, d.nome`,
+      params,
+    );
+    res.json(deps.rows);
+  } catch (err) {
+    console.error("listar deps admin", err);
+    res.status(500).json({ message: "Erro ao listar departamentos" });
+  }
+});
+
+router.get("/admin/professores", async (req, res) => {
+  const institutionId = req.query.institutionId ? Number(req.query.institutionId) : null;
+  const departmentId = req.query.departmentId ? Number(req.query.departmentId) : null;
+  const params = [];
+  const where = [];
+  if (institutionId) {
+    params.push(institutionId);
+    where.push(`p.institution_id = $${params.length}`);
+  }
+  if (departmentId) {
+    params.push(departmentId);
+    where.push(`p.department_id = $${params.length}`);
+  }
+  const query = `
+    SELECT p.id, p.nome, p.bio, p.institution_id, p.department_id, i.nome AS instituicao, d.nome AS departamento
+    FROM professors p
+    JOIN institutions i ON i.id = p.institution_id
+    LEFT JOIN departments d ON d.id = p.department_id
+    ${where.length ? `WHERE ${where.join(" AND ")}` : ""}
+    ORDER BY p.id ASC
+  `;
+  try {
+    const result = await pool.query(query, params);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("listar profs admin", err);
+    res.status(500).json({ message: "Erro ao listar professores" });
+  }
+});
+
+// Historico de moderacao
+router.get("/admin/avaliacoes/historico", async (req, res) => {
+  const status = req.query.status;
+  const params = [];
+  const where = [];
+  if (status) {
+    params.push(status);
+    where.push(`e.status = $${params.length}`);
+  } else {
+    where.push(`e.status IN ('aprovada','rejeitada')`);
+  }
+  const query = `
+    SELECT e.id, e.professor_id, e.user_id, e.rating, e.comment, e.status, e.created_at, p.nome AS professor_nome
+    FROM evaluations e
+    JOIN professors p ON p.id = e.professor_id
+    ${where.length ? `WHERE ${where.join(" AND ")}` : ""}
+    ORDER BY e.created_at DESC
+    LIMIT 100
+  `;
+  try {
+    const result = await pool.query(query, params);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("historico moderacao", err);
+    res.status(500).json({ message: "Erro ao listar historico" });
+  }
+});
+
+router.get("/admin/stats", async (_req, res) => {
+  try {
+    const users = await pool.query("SELECT COUNT(*) AS total FROM users");
+    const profs = await pool.query("SELECT COUNT(*) AS total FROM professors");
+    const avals = await pool.query("SELECT COUNT(*) AS total, COUNT(*) FILTER (WHERE status='aprovada') AS aprovadas FROM evaluations");
+    res.json({
+      users: Number(users.rows[0].total),
+      professores: Number(profs.rows[0].total),
+      avaliacoes: Number(avals.rows[0].total),
+      avaliacoesAprovadas: Number(avals.rows[0].aprovadas),
+    });
+  } catch (err) {
+    console.error("stats", err);
+    res.status(500).json({ message: "Erro ao obter stats" });
+  }
+});
+
 export default router;

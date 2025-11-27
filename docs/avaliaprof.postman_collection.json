@@ -11,280 +11,45 @@
     { "key": "adminToken", "value": "" }
   ],
   "item": [
-    {
-      "name": "Auth - Register",
-      "request": {
-        "method": "POST",
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"123456\"\n}"
-        },
-        "url": "{{baseUrl}}/auth/register"
-      }
-    },
-    {
-      "name": "Auth - Login",
-      "request": {
-        "method": "POST",
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"123456\"\n}"
-        },
-        "url": "{{baseUrl}}/auth/login"
-      }
-    },
-    {
-      "name": "Auth - Me",
-      "request": {
-        "method": "GET",
-        "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
-        "url": "{{baseUrl}}/auth/me"
-      }
-    },
-    {
-      "name": "Professores - Listar",
-      "request": {
-        "method": "GET",
-        "url": "{{baseUrl}}/professores?avaliacaoMinima=4"
-      }
-    },
-    {
-      "name": "Professores - Top",
-      "request": {
-        "method": "GET",
-        "url": "{{baseUrl}}/professores/top"
-      }
-    },
-    {
-      "name": "Professores - Perfil",
-      "request": {
-        "method": "GET",
-        "url": "{{baseUrl}}/professores/1"
-      }
-    },
-    {
-      "name": "Professores - Avaliacoes",
-      "request": {
-        "method": "GET",
-        "url": "{{baseUrl}}/professores/1/avaliacoes"
-      }
-    },
-    {
-      "name": "Avaliacoes - Criar (auth)",
-      "request": {
-        "method": "POST",
-        "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"nota\": 5,\n  \"comentario\": \"Explica muito bem\"\n}"
-        },
-        "url": "{{baseUrl}}/professores/1/avaliacoes"
-      }
-    },
-    {
-      "name": "Avaliacoes - Detalhar",
-      "request": {
-        "method": "GET",
-        "url": "{{baseUrl}}/avaliacoes/101"
-      }
-    },
-    {
-      "name": "Avaliacoes - Confirmacao",
-      "request": {
-        "method": "GET",
-        "url": "{{baseUrl}}/avaliacoes/101/confirmacao"
-      }
-    },
-    {
-      "name": "Avaliacoes - Editar (auth)",
-      "request": {
-        "method": "PATCH",
-        "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"nota\": 4,\n  \"comentario\": \"Atualizando avaliacao\"\n}"
-        },
-        "url": "{{baseUrl}}/avaliacoes/101"
-      }
-    },
-    {
-      "name": "Avaliacoes - Remover (auth)",
-      "request": {
-        "method": "DELETE",
-        "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
-        "url": "{{baseUrl}}/avaliacoes/101"
-      }
-    },
-    {
-      "name": "Admin - Pendentes",
-      "request": {
-        "method": "GET",
-        "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] },
-        "url": "{{baseUrl}}/admin/avaliacoes/pendentes"
-      }
-    },
-    {
-      "name": "Admin - Aprovar",
-      "request": {
-        "method": "POST",
-        "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] },
-        "url": "{{baseUrl}}/admin/avaliacoes/201/aprovar"
-      }
-    },
-    {
-      "name": "Admin - Rejeitar",
-      "request": {
-        "method": "POST",
-        "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] },
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"motivo\": \"Conteudo ofensivo\"\n}"
-        },
-        "url": "{{baseUrl}}/admin/avaliacoes/201/rejeitar"
-      }
-    },
-    {
-      "name": "Instituicoes - Listar",
-      "request": {
-        "method": "GET",
-        "url": "{{baseUrl}}/instituicoes"
-      }
-    },
-    {
-      "name": "Instituicoes - Departamentos",
-      "request": {
-        "method": "GET",
-        "url": "{{baseUrl}}/instituicoes/1/departamentos"
-      }
-    },
-    {
-      "name": "Admin - Criar Instituicao",
-      "request": {
-        "method": "POST",
-        "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] },
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"nome\": \"Universidade Z\"\n}"
-        },
-        "url": "{{baseUrl}}/admin/instituicoes"
-      }
-    },
-    {
-      "name": "Admin - Atualizar Instituicao",
-      "request": {
-        "method": "PATCH",
-        "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] },
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"nome\": \"Universidade Z Atualizada\"\n}"
-        },
-        "url": "{{baseUrl}}/admin/instituicoes/1"
-      }
-    },
-    {
-      "name": "Admin - Remover Instituicao",
-      "request": {
-        "method": "DELETE",
-        "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] },
-        "url": "{{baseUrl}}/admin/instituicoes/1"
-      }
-    },
-    {
-      "name": "Admin - Criar Departamento",
-      "request": {
-        "method": "POST",
-        "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] },
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"institutionId\": 1,\n  \"nome\": \"Computacao\"\n}"
-        },
-        "url": "{{baseUrl}}/admin/departamentos"
-      }
-    },
-    {
-      "name": "Admin - Atualizar Departamento",
-      "request": {
-        "method": "PATCH",
-        "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] },
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"nome\": \"Computacao Atualizada\"\n}"
-        },
-        "url": "{{baseUrl}}/admin/departamentos/1"
-      }
-    },
-    {
-      "name": "Admin - Remover Departamento",
-      "request": {
-        "method": "DELETE",
-        "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] },
-        "url": "{{baseUrl}}/admin/departamentos/1"
-      }
-    },
-    {
-      "name": "Admin - Criar Professor",
-      "request": {
-        "method": "POST",
-        "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] },
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"nome\": \"Novo Professor\",\n  \"institutionId\": 1,\n  \"departmentId\": 1,\n  \"bio\": \"Bio opcional\"\n}"
-        },
-        "url": "{{baseUrl}}/admin/professores"
-      }
-    },
-    {
-      "name": "Admin - Atualizar Professor",
-      "request": {
-        "method": "PATCH",
-        "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] },
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"nome\": \"Professor Atualizado\",\n  \"bio\": \"Nova bio\"\n}"
-        },
-        "url": "{{baseUrl}}/admin/professores/1"
-      }
-    },
-    {
-      "name": "Admin - Remover Professor",
-      "request": {
-        "method": "DELETE",
-        "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] },
-        "url": "{{baseUrl}}/admin/professores/1"
-      }
-    }
+    { "name": "Auth - Register", "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"123456\"\n}" }, "url": "{{baseUrl}}/auth/register" } },
+    { "name": "Auth - Login", "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"123456\"\n}" }, "url": "{{baseUrl}}/auth/login" } },
+    { "name": "Auth - Me", "request": { "method": "GET", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] }, "url": "{{baseUrl}}/auth/me" } },
+
+    { "name": "Professores - Listar", "request": { "method": "GET", "url": "{{baseUrl}}/professores?avaliacaoMinima=4" } },
+    { "name": "Professores - Top", "request": { "method": "GET", "url": "{{baseUrl}}/professores/top" } },
+    { "name": "Professores - Perfil", "request": { "method": "GET", "url": "{{baseUrl}}/professores/1" } },
+    { "name": "Professores - Avaliacoes", "request": { "method": "GET", "url": "{{baseUrl}}/professores/1/avaliacoes" } },
+
+    { "name": "Avaliacoes - Criar (auth)", "request": { "method": "POST", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] }, "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"nota\": 5,\n  \"comentario\": \"Explica muito bem\"\n}" }, "url": "{{baseUrl}}/professores/1/avaliacoes" } },
+    { "name": "Avaliacoes - Detalhar", "request": { "method": "GET", "url": "{{baseUrl}}/avaliacoes/101" } },
+    { "name": "Avaliacoes - Confirmacao", "request": { "method": "GET", "url": "{{baseUrl}}/avaliacoes/101/confirmacao" } },
+    { "name": "Avaliacoes - Editar (auth)", "request": { "method": "PATCH", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] }, "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"nota\": 4,\n  \"comentario\": \"Atualizando avaliacao\"\n}" }, "url": "{{baseUrl}}/avaliacoes/101" } },
+    { "name": "Avaliacoes - Remover (auth)", "request": { "method": "DELETE", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] }, "url": "{{baseUrl}}/avaliacoes/101" } },
+    { "name": "Avaliacoes - Minhas (auth)", "request": { "method": "GET", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] }, "url": "{{baseUrl}}/me/avaliacoes" } },
+
+    { "name": "Instituicoes - Listar", "request": { "method": "GET", "url": "{{baseUrl}}/instituicoes" } },
+    { "name": "Instituicoes - Departamentos", "request": { "method": "GET", "url": "{{baseUrl}}/instituicoes/1/departamentos" } },
+
+    { "name": "Admin - Pendentes", "request": { "method": "GET", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] }, "url": "{{baseUrl}}/admin/avaliacoes/pendentes" } },
+    { "name": "Admin - Aprovar", "request": { "method": "POST", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] }, "url": "{{baseUrl}}/admin/avaliacoes/201/aprovar" } },
+    { "name": "Admin - Rejeitar", "request": { "method": "POST", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] }, "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"motivo\": \"Conteudo ofensivo\"\n}" }, "url": "{{baseUrl}}/admin/avaliacoes/201/rejeitar" } },
+    { "name": "Admin - Historico moderacao", "request": { "method": "GET", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] }, "url": "{{baseUrl}}/admin/avaliacoes/historico" } },
+    { "name": "Admin - Stats", "request": { "method": "GET", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] }, "url": "{{baseUrl}}/admin/stats" } },
+
+    { "name": "Admin - Listar Instituicoes", "request": { "method": "GET", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] }, "url": "{{baseUrl}}/admin/instituicoes" } },
+    { "name": "Admin - Listar Departamentos", "request": { "method": "GET", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] }, "url": "{{baseUrl}}/admin/departamentos" } },
+    { "name": "Admin - Listar Professores", "request": { "method": "GET", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] }, "url": "{{baseUrl}}/admin/professores" } },
+
+    { "name": "Admin - Criar Instituicao", "request": { "method": "POST", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] }, "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Universidade Z\"\n}" }, "url": "{{baseUrl}}/admin/instituicoes" } },
+    { "name": "Admin - Atualizar Instituicao", "request": { "method": "PATCH", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] }, "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Universidade Z Atualizada\"\n}" }, "url": "{{baseUrl}}/admin/instituicoes/1" } },
+    { "name": "Admin - Remover Instituicao", "request": { "method": "DELETE", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] }, "url": "{{baseUrl}}/admin/instituicoes/1" } },
+
+    { "name": "Admin - Criar Departamento", "request": { "method": "POST", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] }, "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"institutionId\": 1,\n  \"nome\": \"Computacao\"\n}" }, "url": "{{baseUrl}}/admin/departamentos" } },
+    { "name": "Admin - Atualizar Departamento", "request": { "method": "PATCH", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] }, "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Computacao Atualizada\"\n}" }, "url": "{{baseUrl}}/admin/departamentos/1" } },
+    { "name": "Admin - Remover Departamento", "request": { "method": "DELETE", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] }, "url": "{{baseUrl}}/admin/departamentos/1" } },
+
+    { "name": "Admin - Criar Professor", "request": { "method": "POST", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] }, "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Novo Professor\",\n  \"institutionId\": 1,\n  \"departmentId\": 1,\n  \"bio\": \"Bio opcional\"\n}" }, "url": "{{baseUrl}}/admin/professores" } },
+    { "name": "Admin - Atualizar Professor", "request": { "method": "PATCH", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] }, "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Professor Atualizado\",\n  \"bio\": \"Nova bio\"\n}" }, "url": "{{baseUrl}}/admin/professores/1" } },
+    { "name": "Admin - Remover Professor", "request": { "method": "DELETE", "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{adminToken}}", "type": "string" } ] }, "url": "{{baseUrl}}/admin/professores/1" } }
   ]
 }

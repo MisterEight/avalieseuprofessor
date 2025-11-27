@@ -66,6 +66,38 @@ router.get("/avaliacoes/:id", async (req, res) => {
   }
 });
 
+router.get("/me/avaliacoes", requireAuth, async (req, res) => {
+  const page = Number(req.query.page || 1);
+  const perPage = Math.min(Number(req.query.perPage || 10), 50);
+  const offset = (page - 1) * perPage;
+
+  const query = `
+    SELECT e.id, e.professor_id, e.rating, e.comment, e.status, e.created_at, p.nome AS professor_nome
+    FROM evaluations e
+    JOIN professors p ON p.id = e.professor_id
+    WHERE e.user_id = $1
+    ORDER BY e.created_at DESC
+    LIMIT $2 OFFSET $3
+  `;
+  const countQuery = `SELECT COUNT(*) AS total FROM evaluations WHERE user_id = $1`;
+
+  try {
+    const [list, count] = await Promise.all([
+      pool.query(query, [req.user.id, perPage, offset]),
+      pool.query(countQuery, [req.user.id]),
+    ]);
+    res.json({
+      page,
+      perPage,
+      total: Number(count.rows[0].total),
+      itens: list.rows,
+    });
+  } catch (err) {
+    console.error("listar minhas avaliacoes", err);
+    res.status(500).json({ message: "Erro ao listar avaliacoes" });
+  }
+});
+
 router.get("/avaliacoes/:id/confirmacao", async (req, res) => {
   const id = Number(req.params.id);
   if (!id) return res.status(400).json({ message: "ID invalido" });
