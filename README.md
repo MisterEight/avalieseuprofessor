@@ -21,9 +21,3 @@ Projeto inicial para portal de avaliacoes de professores.
 - Endpoints iniciais: ver `docs/api-rotas.md`.
 - Credenciais seed: `aluno@exemplo.com` / `123456` (role student) e `admin@exemplo.com` / `123456`.
 - Autenticacao: `POST /auth/login` retorna um JWT (Bearer). Use-o em rotas protegidas (ex.: `POST /professores/:id/avaliacoes`, rotas /admin).
-
-## Proximos passos
-- Escolher framework do front (pode iniciar com HTML + Bootstrap e evoluir para React, se necessario).
-- Inicializar o back (ex.: `npm install` e configurar Express/Fastify e conexao Postgres).
-- Documentar como instalar dependencias, rodar o projeto e executar testes.
-- Adicionar informacoes de licenca.
